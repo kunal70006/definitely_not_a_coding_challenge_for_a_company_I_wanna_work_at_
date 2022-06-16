@@ -12,6 +12,7 @@ export const getComments = async (req, res) => {
 
 export const createComments = async (req, res) => {
   const comment = req.body;
+  // console.log(comment);
   const newComment = new CommentModel(comment);
   try {
     await newComment.save();
@@ -19,4 +20,10 @@ export const createComments = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
+};
+
+export const updateUpvotes = async (req, res) => {
+  const updatedPost = req.body;
+  await CommentModel.findByIdAndUpdate(updatedPost._id, updatedPost);
+  res.json(updatedPost);
 };

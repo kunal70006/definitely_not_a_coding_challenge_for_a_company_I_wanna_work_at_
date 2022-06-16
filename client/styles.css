@@ -16,9 +16,11 @@ body {
   background-color: white;
   padding: 4rem;
   width: 40%;
+  /* height: 80vh; */
   display: flex;
   flex-direction: column;
   border-radius: 6px;
+  margin-top: 2rem;
 }
 
 .commentInput {
@@ -60,4 +62,40 @@ body {
   height: 2px;
   width: 100%;
   background-color: rgb(220, 220, 220);
+}
+
+.replyContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  position: absolute;
+  width: 40%;
+  margin: 2rem -4rem;
+  /* margin-bottom: 2rem; */
+  padding: 4rem;
+}
+
+.commentContainer {
+  margin-bottom: 3rem;
+}
+
+.commentAuthor {
+  font-size: 18px;
+}
+
+.commentContent {
+  font-size: 14px;
+  margin: 10px auto;
+}
+
+.btn {
+  padding: 6px 12px;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  color: #4b587c;
+  font-weight: 600;
+  background: none;
+  cursor: pointer;
+  margin-right: 1rem;
 }
