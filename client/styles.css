@@ -99,3 +99,22 @@ body {
   cursor: pointer;
   margin-right: 1rem;
 }
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 80%;
+  }
+
+  .replyContainer {
+    width: 80%;
+  }
+
+  .commentInput {
+    flex-direction: column;
+  }
+
+  .input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
