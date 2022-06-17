@@ -1,13 +1,39 @@
 const inputField = document.querySelector(".input");
 const section = document.querySelector(".replyContainer");
+const thumbnailContainer = document.querySelector(".thumbnail");
+const SERVER_URL = "https://coding-challenge-2022.herokuapp.com/";
+let THUMBNAIL_SOURCE = "";
 
 window.addEventListener("load", () => {
-  getComments();
+  getThumbnails().then(() => getComments());
+  // getComments();
 });
+
+const getThumbnails = async () => {
+  try {
+    const res = await fetch("https://randomuser.me/api/");
+    const data = await res.json();
+    // console.log(data);
+    THUMBNAIL_SOURCE = data?.results[0]?.picture?.thumbnail;
+    if (THUMBNAIL_SOURCE.length > 0) {
+      thumbnailContainer.appendChild(createThumbnails());
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createThumbnails = () => {
+  const img = document.createElement("img");
+  img.classList = "thumbnailImage";
+  img.src = THUMBNAIL_SOURCE;
+  img.alt = "Thumbnail";
+  return img;
+};
 
 const getComments = async () => {
   try {
-    const res = await fetch("http://localhost:5000/");
+    const res = await fetch(SERVER_URL);
     const data = await res.json();
     // console.log(data);
 
@@ -15,6 +41,7 @@ const getComments = async () => {
     data.map((comment) => {
       const container = document.createElement("div");
       const authorName = document.createElement("h1");
+      const authorDiv = document.createElement("div");
       const content = document.createElement("p");
       const btnDiv = document.createElement("div");
       const upvoteBtn = document.createElement("button");
@@ -23,6 +50,7 @@ const getComments = async () => {
       // Adding classes to the elements created above
       container.classList = "commentContainer";
       authorName.classList = "commentAuthor";
+      authorDiv.classList = "commentAuthorContainer";
       content.classList = "commentContent";
       btnDiv.classList = "btnDiv";
       upvoteBtn.classList = "btn";
@@ -53,7 +81,7 @@ const getComments = async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newCommentObj),
           };
-          const res = await fetch("http://localhost:5000/", postObj);
+          const res = await fetch(SERVER_URL, postObj);
           const data = await res.json();
           console.log(data);
           location.reload();
@@ -63,7 +91,13 @@ const getComments = async () => {
       });
 
       // appending everything to the parent and DOM
-      container.appendChild(authorName);
+      console.log(THUMBNAIL_SOURCE);
+      if (THUMBNAIL_SOURCE.length > 0) {
+        authorDiv.appendChild(createThumbnails());
+      }
+
+      authorDiv.appendChild(authorName);
+      container.appendChild(authorDiv);
       container.appendChild(content);
       btnDiv.appendChild(upvoteBtn);
       btnDiv.appendChild(replyBtn);
@@ -88,7 +122,7 @@ const handleSubmit = async () => {
     body: JSON.stringify(commentObj),
   };
   try {
-    const res = await fetch("http://localhost:5000/", postObj);
+    const res = await fetch(SERVER_URL, postObj);
     const data = await res.json();
     console.log(data);
     inputField.value = "";
