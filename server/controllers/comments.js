@@ -6,7 +6,7 @@ export const getComments = async (req, res) => {
     console.log(comments);
     res.status(200).json(comments);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ message: error });
   }
 };
 
@@ -18,12 +18,16 @@ export const createComments = async (req, res) => {
     await newComment.save();
     res.status(201).json(newComment);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    res.status(409).json({ message: error });
   }
 };
 
 export const updateUpvotes = async (req, res) => {
-  const updatedPost = req.body;
-  await CommentModel.findByIdAndUpdate(updatedPost._id, updatedPost);
-  res.json(updatedPost);
+  try {
+    const updatedPost = req.body;
+    await CommentModel.findByIdAndUpdate(updatedPost._id, updatedPost);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(401).json({ message: error });
+  }
 };
