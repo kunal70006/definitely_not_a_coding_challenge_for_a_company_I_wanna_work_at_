@@ -8,6 +8,18 @@ function App() {
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
 
+  const getComments = async () => {
+    try {
+      const res = await fetch("https://coding-challenge-2022.herokuapp.com/");
+      const data = await res.json();
+      // console.log(data);
+      setAllComments(data);
+      localStorage.setItem("allComments", JSON.stringify(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const getThumbnails = async () => {
       try {
@@ -19,17 +31,17 @@ function App() {
       }
     };
     getThumbnails();
-    const getComments = async () => {
-      try {
-        const res = await fetch("https://coding-challenge-2022.herokuapp.com/");
-        const data = await res.json();
-        console.log(data);
-        setAllComments(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+
     getComments();
+  }, []);
+
+  // Sync storage across pages
+  useEffect(() => {
+    window.addEventListener("storage", () => {
+      getComments();
+    });
+
+    return () => window.removeEventListener("storage", () => getComments());
   }, []);
 
   const postComment = async () => {
@@ -49,7 +61,10 @@ function App() {
         postObj
       );
       const data = await res.json();
-      console.log(data);
+      console.log(data, res.status);
+      if (res.status === 201) {
+        getComments();
+      }
       setComment("");
     } catch (error) {
       console.log(error);
@@ -66,7 +81,11 @@ function App() {
           postComment={postComment}
         />
         <div className="divider" />
-        <AllComments allComments={allComments} avatar={avatar} />
+        <AllComments
+          allComments={allComments}
+          avatar={avatar}
+          getComments={getComments}
+        />
       </div>
     </div>
   );

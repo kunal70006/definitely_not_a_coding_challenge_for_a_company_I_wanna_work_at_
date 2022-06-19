@@ -1,4 +1,4 @@
-const AllComments = ({ allComments, avatar }) => {
+const AllComments = ({ allComments, avatar, getComments }) => {
   const upvote = async (comment) => {
     try {
       const newCommentObj = {
@@ -20,11 +20,14 @@ const AllComments = ({ allComments, avatar }) => {
         postObj
       );
       const data = await res.json();
-      console.log(data);
+      if (res.status === 200) {
+        getComments();
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   return allComments
     ? allComments.map((comment) => (
         <div key={comment._id} className="commentContainer">
@@ -38,7 +41,7 @@ const AllComments = ({ allComments, avatar }) => {
           </div>
           <div className="btnContainer">
             <button className="btn" onClick={() => upvote(comment)}>
-              {comment.upvoteCount === 0 ? "Upvote" : comment.upvoteCount}
+              {comment?.upvoteCount === 0 ? "Upvote" : comment.upvoteCount}
             </button>
             <button className="btn">Reply</button>
           </div>
