@@ -1,8 +1,14 @@
-const InputComponent = ({ avatar, comment, setComment, postComment }) => {
+const InputComponent = ({
+  avatar,
+  comment,
+  setComment,
+  postComment,
+  btnText,
+  commentToSend,
+}) => {
   return (
     <>
       {" "}
-      <h1 className="title">Discussion</h1>
       <div className="inputContainer">
         <img src={avatar || ""} alt="avatar" className="avatar" />
         <input
@@ -12,8 +18,12 @@ const InputComponent = ({ avatar, comment, setComment, postComment }) => {
           value={comment || ""}
           onChange={(e) => setComment(e.target.value)}
         />
-        <button className="commentBtn" onClick={postComment}>
-          Comment
+        <button
+          className="commentBtn"
+          onClick={() => postComment(commentToSend)}
+          disabled={comment.length === 0}
+        >
+          {btnText}
         </button>
       </div>
     </>

@@ -1,33 +1,15 @@
-const AllComments = ({ allComments, avatar, getComments }) => {
-  const upvote = async (comment) => {
-    try {
-      const newCommentObj = {
-        comment: comment.comment,
-        author: comment.author,
-        createdAt: comment.createdAt,
-        upvoteCount: comment.upvoteCount + 1,
-        replies: comment.replies,
-        _id: comment._id,
-        __v: comment.__v,
-      };
-      const postObj = {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newCommentObj),
-      };
-      const res = await fetch(
-        "https://coding-challenge-2022.herokuapp.com/",
-        postObj
-      );
-      const data = await res.json();
-      if (res.status === 200) {
-        getComments();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+import InputComponent from "../InputComponent";
 
+const AllComments = ({
+  allComments,
+  avatar,
+  upvote,
+  handleReplyClick,
+  reply,
+  setReply,
+  clicked,
+  postReply,
+}) => {
   return allComments
     ? allComments.map((comment) => (
         <div key={comment._id} className="commentContainer">
@@ -43,7 +25,35 @@ const AllComments = ({ allComments, avatar, getComments }) => {
             <button className="btn" onClick={() => upvote(comment)}>
               {comment?.upvoteCount === 0 ? "Upvote" : comment.upvoteCount}
             </button>
-            <button className="btn">Reply</button>
+            <button
+              className="btn"
+              onClick={() => handleReplyClick(comment._id)}
+            >
+              Reply
+            </button>
+            {clicked?.includes(comment._id) ? (
+              <div style={{ margin: "1rem" }}>
+                <InputComponent
+                  avatar={avatar}
+                  comment={reply}
+                  setComment={setReply}
+                  postComment={postReply}
+                  btnText="Reply"
+                  commentToSend={comment}
+                />
+              </div>
+            ) : null}
+          </div>
+          <div className="repliesContainer">
+            {comment?.replies?.length > 0 ? (
+              <div className="replyContainer">
+                <AllComments
+                  allComments={comment.replies}
+                  avatar={avatar}
+                  upvote={upvote}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       ))
