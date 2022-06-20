@@ -47,11 +47,7 @@ const AllComments = ({
           <div className="repliesContainer">
             {comment?.replies?.length > 0 ? (
               <div className="replyContainer">
-                <AllComments
-                  allComments={comment.replies}
-                  avatar={avatar}
-                  upvote={upvote}
-                />
+                <AllComments allComments={comment.replies} avatar={avatar} />
               </div>
             ) : null}
           </div>

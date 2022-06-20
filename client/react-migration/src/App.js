@@ -12,7 +12,7 @@ function App() {
 
   const getComments = async () => {
     try {
-      const res = await fetch("https://coding-challenge-2022.herokuapp.com/");
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL);
       const data = await res.json();
       // console.log(data);
       setAllComments(data);
@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const getThumbnails = async () => {
       try {
-        const res = await fetch("https://randomuser.me/api/");
+        const res = await fetch(process.env.REACT_APP_RANDOM_AVATAR_URL);
         const data = await res.json();
         setAvatar(data?.results[0]?.picture?.thumbnail);
       } catch (err) {
@@ -58,10 +58,7 @@ function App() {
       body: JSON.stringify(commentObj),
     };
     try {
-      const res = await fetch(
-        "https://coding-challenge-2022.herokuapp.com/",
-        postObj
-      );
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL, postObj);
       const data = await res.json();
       console.log(data, res.status);
       if (res.status === 201) {
@@ -89,10 +86,7 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newCommentObj),
       };
-      const res = await fetch(
-        "https://coding-challenge-2022.herokuapp.com/",
-        postObj
-      );
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL, postObj);
       const data = await res.json();
       if (res.status === 200) {
         getComments();
@@ -131,10 +125,7 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempObj),
     };
-    const res = await fetch(
-      "https://coding-challenge-2022.herokuapp.com/",
-      postObj
-    );
+    const res = await fetch(process.env.REACT_APP_BACKEND_URL, postObj);
 
     const data = await res.json();
     if (res.status === 200) {

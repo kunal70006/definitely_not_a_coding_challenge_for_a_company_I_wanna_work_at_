@@ -101,3 +101,18 @@
   margin-top: 1rem;
   margin-left: 1rem;
 }
+
+@media only screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+  }
+
+  .inputContainer {
+    flex-direction: column;
+  }
+
+  .input {
+    width: 100%;
+    margin: 1rem auto;
+  }
+}
